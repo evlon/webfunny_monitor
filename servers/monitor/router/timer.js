@@ -98,19 +98,57 @@ module.exports = async (customerWarningCallback, serverType = "master") => {
             const hourTimeStr = dateTime.Format("hh:mm:ss")
             const minuteTimeStr = dateTime.Format("mm:ss")
 
-            // 每隔10分钟，判断是否流量已达上限
+            const loopGap = accountInfo.batchInsert.loopGap || 10
+            switch(loopGap) {
+                case 10:
+                    // 每隔10秒钟
+                    if (minuteTimeStr.substring(4) == "0") {
+                        // 取内存中的数据入库
+                        Common.handleLogInfoQueue()
+                    }
+                    break
+                case 20:
+                    // 每隔20秒钟
+                    if (["00", "20", "40"].includes(minuteTimeStr.substring(3))) {
+                        // 取内存中的数据入库
+                        Common.handleLogInfoQueue()
+                    }
+                    break
+                case 30:
+                    // 每隔30秒钟
+                    if (["00", "30"].includes(minuteTimeStr.substring(3))) {
+                        // 取内存中的数据入库
+                        Common.handleLogInfoQueue()
+                    }
+                    break
+                case 60:
+                    // 每隔30秒钟
+                    if (["00"].includes(minuteTimeStr.substring(3))) {
+                        // 取内存中的数据入库
+                        Common.handleLogInfoQueue()
+                    }
+                    break
+                default:
+                    // 每隔10秒钟
+                    if (minuteTimeStr.substring(4) == "0") {
+                        // 取内存中的数据入库
+                        Common.handleLogInfoQueue()
+                    }
+                    break
+            }
+
+
+            // 每隔10分钟
             if (minuteTimeStr.substring(1) == "0:00") {
                 TimerCalculateController.checkLimitForCloud()
                 TimerCalculateController.checkCommonProduct()
             }
 
-            // 每隔10秒钟，取日志队列里的日志，执行入库操作
+
+            // 每隔10秒钟
             if (minuteTimeStr.substring(4) == "0") {
-                // 去消息队列
-                Common.handleLogInfoQueue()
                 // 更新内存中的token
                 ConfigController.refreshTokenList()
-
                 // 检查导出随机码是否过期
                 TimerCalculateController.checkExportCode()
             }

@@ -27,7 +27,7 @@ module.exports = {
    * @param user 系统邮箱地址（不传参，则默认使用配置的邮箱地址）
    * @param pass 系统邮箱密码（不传参，则默认使用配置的邮箱密码）
    */
-  const sendEmail = (targetEmail, emailTitle, emailContent, user = otherConfig.emailUser, pass = otherConfig.emailPassword) => {
+  const sendEmail = (targetEmail, emailTitle, emailContent, user = otherConfig.email.emailUser, pass = otherConfig.email.emailPassword) => {
       const company = "webfunny"
       let transporter = nodemailer.createTransport({
           host: "smtp.163.com",
@@ -37,7 +37,7 @@ module.exports = {
       });
       // send mail with defined transport object
       transporter.sendMail({
-          from: "'" + company + "' <" + user + ">", // sender address
+          from: company + " " + "<" + user + ">", // sender address
           to: targetEmail, // list of receivers
           subject: emailTitle, // Subject line
           text: emailContent, // plain text body

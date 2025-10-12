@@ -84,6 +84,56 @@ module.exports = async () => {
             const hourTimeStr = tempDate.Format("hh:mm:ss")
             const minuteTimeStr = tempDate.Format("mm:ss")
             try {
+
+                const loopGap = accountInfo.batchInsert.loopGap || 10
+                switch(loopGap) {
+                    case 10:
+                        // 每隔10秒钟
+                        if (minuteTimeStr.substring(4) == "0") {
+                            // 取日志队列批量插入
+                            CommonUpLog.handleLogInfoQueue()
+                            // 批量处理失败点位日志队列
+                            CommonUpLog.handleFailLogQueue()
+                        }
+                        break
+                    case 20:
+                        // 每隔20秒钟
+                        if (["00", "20", "40"].includes(minuteTimeStr.substring(3))) {
+                            // 取日志队列批量插入
+                            CommonUpLog.handleLogInfoQueue()
+                            // 批量处理失败点位日志队列
+                            CommonUpLog.handleFailLogQueue()
+                        }
+                        break
+                    case 30:
+                        // 每隔30秒钟
+                        if (["00", "30"].includes(minuteTimeStr.substring(3))) {
+                            // 取日志队列批量插入
+                            CommonUpLog.handleLogInfoQueue()
+                            // 批量处理失败点位日志队列
+                            CommonUpLog.handleFailLogQueue()
+                        }
+                        break
+                    case 60:
+                        // 每隔30秒钟
+                        if (["00"].includes(minuteTimeStr.substring(3))) {
+                            // 取日志队列批量插入
+                            CommonUpLog.handleLogInfoQueue()
+                            // 批量处理失败点位日志队列
+                            CommonUpLog.handleFailLogQueue()
+                        }
+                        break
+                    default:
+                        // 每隔10秒钟
+                        if (minuteTimeStr.substring(4) == "0") {
+                            // 取日志队列批量插入
+                            CommonUpLog.handleLogInfoQueue()
+                            // 批量处理失败点位日志队列
+                            CommonUpLog.handleFailLogQueue()
+                        }
+                        break
+                }
+
                 if (minuteTimeStr.substring(1) == "0:00") {
                     TimerCalculateController.checkLimitForCloud()
                     TimerCalculateController.checkCommonProduct()
@@ -171,11 +221,8 @@ module.exports = async () => {
 
                 // 每隔10秒钟，取日志队列里的日志，执行入库操作
                 if (minuteTimeStr.substring(4) == "0") {
-                    // 取日志队列批量插入
-                    CommonUpLog.handleLogInfoQueue()
                     // 更新内存中的token
                     ConfigController.refreshTokenList()
-
                     // 检查导出的随机码
                     TimerCalculateController.checkExportCode()
                 }
@@ -195,11 +242,11 @@ module.exports = async () => {
                 }
 
                 // 每个小时第00分钟的执行一次告警分析
-                // if (minuteTimeStr == "00:00") {
-                //     TimerStatisticController.handleAlarm().catch((e)=>{
-                //         log.printError("定时执行告警异常",e)
-                //     });
-                // }
+                if (minuteTimeStr == "00:00") {
+                    TimerStatisticController.handleAlarm().catch((e)=>{
+                        log.printError("定时执行告警异常",e)
+                    });
+                }
                 // 每分钟的执行一次执行点位缓存更新
                 if (minuteTimeStr.substring(3) == "00") {
                     try {

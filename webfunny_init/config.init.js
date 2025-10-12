@@ -142,6 +142,7 @@ const otherConfig = {
   "cacheDataTime": 60,        // 开启数据缓存，单位：分钟；0代表不开启接口数据缓存；枚举：1、5、10、30、60
   "business": {
     "batchInsert": {
+      "loopGap": 10, // 注意：间隔会影响实时性数据（如在线人数）；日志队列里的数据进行入库的频率，默认10s一次；可以设置：10、20、30、60; 
       "limitQueueLength": 1000  // 一次批量插入最大数量
     },
     "userStayTimeScope": {      // 记录停留时间范围（即将废弃）

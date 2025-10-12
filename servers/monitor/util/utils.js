@@ -685,8 +685,15 @@ const Utils = {
           case 'completeUrl':
           case 'simpleUrl':
           case 'logContent':
-          case 'loadTime':
             finalData[key] = logInfo[key]
+            break
+          case 'loadTime':
+            if (typeof logInfo[key] === "string") {
+              let temp = Utils.b64DecodeUnicode(logInfo[key])
+              finalData[key] = temp * 1
+            } else {
+              finalData[key] = logInfo[key]
+            }
             break
           case 'uploadType':
             if (logInfo[key].indexOf("_") !== -1) {
