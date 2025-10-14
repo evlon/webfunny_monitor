@@ -16,7 +16,7 @@ module.exports = [
     "/loginForApi", "/registerForApi", "/createNewTeamForApi", "/createNewProjectForApi", 
     "/getTeams", "/getTeamListWithoutToken", "/getTeamDetail", "/updateTeam", "/createFlowData",
     "/getSignatureForFeiShu", "/getAccessTokenByCodeForFeiShu", "/getAccessTokenByCodeForIds", "/apiIdsNotice",
-    "/getCompanyList", "/checkUserByOpenid",
+    "/getCompanyList", "/checkUserByOpenid", "/alarm/getAlarmTriggerList",
 
     //event
     "/sysInfo", "/getSysInfo",

@@ -40,6 +40,12 @@ const Columns = {
       allowNull: true,
       field: 'ruleLevel'
     },
+    // 应用ID
+    applicationId: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      field: 'applicationId'
+    },
     // 应用名称
     application: {
       type: DataTypes.STRING,
