@@ -37,3 +37,5 @@ lib/*.map
 H5SdkReleaseScript*.js
 webfunny.config
 servers/event/lib/dataTempUploads
+*.tmp.js
+*.js.bak
